@@ -160,18 +160,12 @@ int main(){
     cm->solve(3);//Solve prend un sommet (int)
     cm->storeData("matWithMinProfile.txt");
 
-    LDLT ldlt;
-    cout << "____________________________________" << endl;
-    cout << "\n  Factorisation LDLt et Resolution " << endl;
-    cout << "____________________________________" << endl << endl;
-
-    cout << "Resolution du sustem \n A'.x' = b' "<< endl<< endl;
-    // factorisation et resolution
+    LDLT ldlt;// factorisation et resolution
     
     cout << "____________________________________" << endl;
     cout << "\n  Calcule de la solution final    " << endl;
     cout << "____________________________________" << endl << endl;
-    cout << "On a A'.x' = b' ,  \n => Pt.x = x' \n => x = P.x'"<< endl<< endl;
+    cout << "On a A'.x' = b' ,  \n => Pt.x' = b' \n => x = P.x'"<< endl<< endl;
     // matTimesVect(transpose(_P, _dim, _dim), _b, _dim, _dim, _dim); //Pt*b
     
     
@@ -181,10 +175,11 @@ int main(){
     cout << "____________________________________" << endl << endl;
     cout << "       La solution x finale est      "<< endl;
     cout << "____________________________________" << endl << endl;
-    displayVec(solution);
+    
+    // x = P.x'
     solution = cm->matTimesVect(cm->getP(),solution,dim,dim,dim);
     
-    //displayVec(solution);
+    displayVec(solution);
     
     
     // succes de l'execution
@@ -514,6 +509,9 @@ void CuthillMackee::solve(int node)
     cout <<"------------------------------------------------------------------------------" << endl;
     cout << " (cuthill-Mackee) Voici la matrice matrice optimisée avec son second membre :" << endl;
     cout <<"------------------------------------------------------------------------------" << endl;
+
+//////////////////// P debug begin   
+
     displayMatrix(_A, _dim, _dim);
     cout << endl;
     displayArray(_b, _dim);
@@ -523,12 +521,16 @@ void CuthillMackee::solve(int node)
      * Etape de cuthill-Mackee inverse
      * *********************************/
     buidSigmaInverse();
-    buildP(_sigma);//sigma inverse
+    //buildP(_sigma);//sigma inverse
 
     //Calcul de Aprim et de bprim
     _A = matTimesMat(_P, _A, _dim, _dim, _dim, _dim); //P*A
     _A = matTimesMat(_A, transpose(_P, _dim, _dim), _dim, _dim, _dim, _dim);//A*Pt
     _b = matTimesVect(_P, _b, _dim, _dim, _dim); //P*b
+    
+    cout << "Debug P" << endl;
+    displayMatrix(_P, _dim, _dim);
+//////////////////////// P debug end
 
     cout <<"--------------------------------------------------------------------------------------" << endl;
     cout << " (cuthill-Mackee-Inverse) Voici la matrice matrice optimisée avec son second membre :" << endl;
