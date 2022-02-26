@@ -26,7 +26,8 @@ int dim(10);            // definir la taille du systeme
 float **newMat(int rows, int cols);     // creer une matrice rows x cols
 float *newVec(int n);                   // creer un vecteur de taille n
 void displayMat(float** mat);           // afficher une matrice de mat
-void displayVec (float* v);             // afficher un vecteur 
+void displayVec (float* v);             // afficher un vecteur
+void displayVec (int* v);             // afficher un vecteur
 
 /*
  *
@@ -117,8 +118,16 @@ class CuthillMackee
         CuthillMackee(string filename);
         ~CuthillMackee();
 
+        int** getP(){return _P;}
+
         void solve(int node);
         void storeData(string filename);
+        //Les opérations matricielles
+        int* matTimesVect(int** Mat, int* vect, int row1, int col1, int vectrow);//Produit d'une matrice à un vecteur
+        int** matTimesMat(int** Mat1, int** Mat2, int row1, int col1, int row2, int col2);//Produit de deux matrices
+        int** transpose(int** M, int row, int col); //Transposer d'une matrice
+        void displayArray(int* arr, int row);
+        void displayMatrix(int** Mat, int row, int col);
 
     private:
         bool is_inSigma(int node);
@@ -131,12 +140,7 @@ class CuthillMackee
         void getData();
         void buildP(int* sigma); //Chercher la matrice de passage P;
         
-        //Les opérations matricielles
-        int* matTimesVect(int** Mat, int* vect, int row1, int col1, int vectrow);//Produit d'une matrice à un vecteur
-        int** matTimesMat(int** Mat1, int** Mat2, int row1, int col1, int row2, int col2);//Produit de deux matrices
-        int** transpose(int** M, int row, int col); //Transposer d'une matrice
-        void displayArray(int* arr, int row);
-        void displayMatrix(int** Mat, int row, int col);
+        
 
         string _filename;
         Graphe* _graphe1;
@@ -163,10 +167,27 @@ int main(){
 
     cout << "Resolution du sustem \n A'.x' = b' "<< endl<< endl;
     // factorisation et resolution
-    ldlt.solve();
-
+    
+    cout << "____________________________________" << endl;
+    cout << "\n  Calcule de la solution final    " << endl;
+    cout << "____________________________________" << endl << endl;
+    cout << "On a A'.x' = b' ,  \n => Pt.x = x' \n => x = P.x'"<< endl<< endl;
+    // matTimesVect(transpose(_P, _dim, _dim), _b, _dim, _dim, _dim); //Pt*b
+    
+    
+    int* solution = new int [10];
+    solution = ldlt.solve();
+    
+    cout << "____________________________________" << endl << endl;
+    cout << "       La solution x finale est      "<< endl;
+    cout << "____________________________________" << endl << endl;
+    displayVec(solution);
+    solution = cm->matTimesVect(cm->getP(),solution,dim,dim,dim);
+    
+    //displayVec(solution);
+    
+    
     // succes de l'execution
-
     return 0;
 }
 
@@ -262,7 +283,6 @@ Graphe::~Graphe()
 {
     delete[] _neighbors;
 }
-
 
 void Graphe::displayNeighborsList()
 {
@@ -977,6 +997,12 @@ void displayVec (float* v){         //afficher un vecteur
     }
 }
 
+void displayVec (int* v){         //afficher un vecteur
+    for(int i=0; i<dim; i++){
+        cout << "[" << v[i] << "]" << endl;
+    }
+}
+
 
 /*
  *
@@ -1208,6 +1234,11 @@ int* LDLT::solve(){
     cout << "La solution (x') du systeme est :"<< endl;
     displayVec(x);                   // afficher le resultat
     
+    int* xVect = new int[dim];
+    for(int i=0;i<dim;i++)
+        xVect[i] = (float) x[i];
+
+    return xVect;                   // renvyer le resultat
 }
 
 // liberation de memoire apres execution
