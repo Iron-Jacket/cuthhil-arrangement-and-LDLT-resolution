@@ -156,6 +156,17 @@ int main(){
     cm->solve(3);//Solve prend un sommet (int)
     cm->storeData("matWithMinProfile.txt");
 
+    LDLT ldlt;
+    cout << "____________________________________" << endl;
+    cout << "\n  Factorisation LDLt et Resolution " << endl;
+    cout << "____________________________________" << endl << endl;
+
+    cout << "Resolution du sustem \n A'.x' = b' "<< endl<< endl;
+    // factorisation et resolution
+    ldlt.solve();
+
+    // succes de l'execution
+
     return 0;
 }
 
@@ -1177,10 +1188,10 @@ int* LDLT::solve(){
     loadAb();
     
     // Interface
-    cout << "La matrice A :" << endl;
+    cout << "La matrice A' :" << endl;
     displayMat(A);
     
-    cout << "\nLe second membre :" << endl;
+    cout << "\nLe second membre b' :" << endl;
     displayVec(b);
 
     cout << "\nProfil de A :" << endl;
@@ -1194,8 +1205,9 @@ int* LDLT::solve(){
     // 4 - Calculen de la solution
     computeX();  
 
-    cout << "La solution du systeme est :"<< endl;
+    cout << "La solution (x') du systeme est :"<< endl;
     displayVec(x);                   // afficher le resultat
+    
 }
 
 // liberation de memoire apres execution
