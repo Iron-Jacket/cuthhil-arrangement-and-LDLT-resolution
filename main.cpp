@@ -1233,7 +1233,7 @@ int* LDLT::solve(){
     cout << "\nLe second membre b' :" << endl;
     displayVec(b);
 
-    cout << "\nProfil de A :" << endl;
+    cout << "\n'Profil de A' :" << endl;
     computeP_i(); // tracer le profil
 
     // 2 - calcule de nDiag, l et p
