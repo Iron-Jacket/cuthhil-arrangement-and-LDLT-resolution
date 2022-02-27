@@ -483,23 +483,25 @@ void CuthillMackee::solve(int node)
     /**
      * Etape de cuthill-Mackee
      * *********************************/
+    cout <<"\n__________________________________________________________" << endl;
+    cout << " Voici la matrice matrice originale avec son second membre :" << endl;
+    cout << "____________________________________________________________" << endl;
+    displayMatrix(_A, _dim, _dim);
+    cout << endl;
+    displayArray(_b, _dim);
+    cout << endl;
+    
+    
     findFirstNode(node);
     buildSigma();
     buildP(_sigma);//sigma
 
-    cout <<"-------------------------------------------------------------" << endl;
+    cout <<"\n-------------------------------------------------------------" << endl;
     cout << "           La matrice de passage trouver                   :" << endl;
     cout <<"-------------------------------------------------------------" << endl;
     displayMatrix(_P, _dim, _dim);
     cout << endl;
 
-    cout <<"-------------------------------------------------------------" << endl;
-    cout << " Voici la matrice matrice originale avec son second membre :" << endl;
-    cout <<"-------------------------------------------------------------" << endl;
-    displayMatrix(_A, _dim, _dim);
-    cout << endl;
-    displayArray(_b, _dim);
-    cout << endl;
     
     //Calcul de Aprim et de bprim
     _A = matTimesMat(transpose(_P, _dim, _dim), _A, _dim, _dim, _dim, _dim); //Pt*A
