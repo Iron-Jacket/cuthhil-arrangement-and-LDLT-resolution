@@ -1,11 +1,16 @@
 /**
  * 
+ *     Rangement de Cuthill Mc Kee  
+ *     et
+ *     Resolution avec LDLT
+ *     -------
+ * 
  *     RATEFIARISON
  *     Harivony Lalatiana
- *     M1
+ *     MISA - M1
+ *      
  * 
- * 
- ***********************************/
+ **/
 
 
 #include <iostream>
@@ -156,7 +161,7 @@ class CuthillMackee
 
 int main(){
     
-    CuthillMackee* cm = new CuthillMackee("matrice1.txt");
+    CuthillMackee* cm = new CuthillMackee("matrixSystem.txt");
     cm->solve(3);//Solve prend un sommet (int)
     cm->storeData("matWithMinProfile.txt");
 
@@ -512,7 +517,6 @@ void CuthillMackee::solve(int node)
     cout << " (cuthill-Mackee) Voici la matrice matrice optimisée avec son second membre :" << endl;
     cout <<"------------------------------------------------------------------------------" << endl;
 
-//////////////////// P debug begin   
 
     displayMatrix(_A, _dim, _dim);
     cout << endl;
@@ -523,8 +527,7 @@ void CuthillMackee::solve(int node)
      * Etape de cuthill-Mackee inverse
      * *********************************/
     buidSigmaInverse();
-    //buildP(_sigma);//sigma inverse
-
+/*
     //Calcul de Aprim et de bprim
     _A = matTimesMat(_P, _A, _dim, _dim, _dim, _dim); //P*A
     _A = matTimesMat(_A, transpose(_P, _dim, _dim), _dim, _dim, _dim, _dim);//A*Pt
@@ -532,7 +535,6 @@ void CuthillMackee::solve(int node)
     
     cout << "Debug P" << endl;
     displayMatrix(_P, _dim, _dim);
-//////////////////////// P debug end
 
     cout <<"--------------------------------------------------------------------------------------" << endl;
     cout << " (cuthill-Mackee-Inverse) Voici la matrice matrice optimisée avec son second membre :" << endl;
@@ -541,9 +543,12 @@ void CuthillMackee::solve(int node)
     cout << endl;
     displayArray(_b, _dim);
     cout << endl;
+    */
 }
 
-
+/*
+*   Recherche du premier node
+*/
 void CuthillMackee::findFirstNode(int node)
 {
     cout << "Choix du premier noeud :" << endl;
@@ -566,6 +571,10 @@ void CuthillMackee::findFirstNode(int node)
 
     cout <<"Premier noeud trouver est : " << _firstNode << endl;
 }
+
+/*
+*   Construction de sigma
+*/
 
 void CuthillMackee::buildSigma()
 {
@@ -757,11 +766,11 @@ void CuthillMackee::storeData(string filename)
         {
             if (i==_dim)
             {
-                outFile << to_string(_b[j]) << ",";
+                outFile << to_string(_b[j]) << " ";
             }
             else
             {
-                outFile << to_string(_A[i][j]) << ",";
+                outFile << to_string(_A[i][j]) << " ";
             }
         }
         outFile << endl;
@@ -1032,7 +1041,7 @@ void LDLT::loadAb(){
     //cout << "Entrez le fichier a charger : "; cin >> fileName;
 
     // ouverture du fichier, 
-    inFile.open("matrix.txt");
+    inFile.open("matWithMinProfile.txt");
 
     if(inFile){
         //recuperer la taille de la matrice
@@ -1106,7 +1115,7 @@ void LDLT::profil(float** mat, string name){
 }
 
 void LDLT::computeAp_nDiag(){
-	ifstream file("matrix.txt", ios::in);
+	ifstream file("matWithMinProfile.txt", ios::in);
     if (file){
         file >> dim;
 
